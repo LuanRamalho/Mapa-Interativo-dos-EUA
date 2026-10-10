@@ -28,6 +28,12 @@ CACHE_DIR = BASE_DIR / "cache"
 
 MAP_FILE = BASE_DIR / "mapa_estados_eua.html"
 
+# ========== COR DO FUNDO DO MAPA ==========
+# ALTERE AQUI O HEXADECIMAL DA COR QUE DESEJA
+# Exemplos: #f5f5f5, #ffffff, #e8f4f8, #f0f8ff
+COR_FUNDO_MAPA = "#aceeff"
+# ==========================================
+
 
 # ============================================================
 # FONTES OFICIAIS DO U.S. CENSUS BUREAU
@@ -615,7 +621,7 @@ def highlight_function(
 
 
 # ============================================================
-# CRIA O MAPA
+# CRIA O MAPA COM COR CUSTOMIZÁVEL
 # ============================================================
 
 def create_map(
@@ -631,11 +637,27 @@ def create_map(
 
         zoom_start=4,
 
-        tiles="CartoDB positron",
+        tiles=None,
 
         control_scale=True,
 
         prefer_canvas=True
+    )
+
+    # --------------------------------------------------------
+    # APLICAR COR DE FUNDO USANDO CSS
+    # --------------------------------------------------------
+
+    estilo_fundo = f"""
+    <style>
+        .leaflet-container {{
+            background-color: {COR_FUNDO_MAPA};
+        }}
+    </style>
+    """
+
+    mapa.get_root().html.add_child(
+        folium.Element(estilo_fundo)
     )
 
     # --------------------------------------------------------
